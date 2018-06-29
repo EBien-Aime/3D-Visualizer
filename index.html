@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+     <link rel="stylesheet" href="index.css">
+    <meta charset="utf-8">
+    <title>Visualiser</title>
+  </head>
+  <body>
+<!-- audio -->
+    <label for="audio_file" class="file"> Choose an audio file
+     <input type="file" id="audio_file" accept="audio/*" />
+     <audio id="audio_player" controls >
+   </label>
+ <!-- <audio id="audio_player" src="SOPHIE-PUMP.mp3"> </audio> -->
+<canvas id="myCanvas"></canvas>
+
+<!-- Three.js -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js'></script>
+  <script src='https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/PointerLockControls.js'></script>
+  <script src='https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js'></script>
+
+
+  <script type="text/javascript" src="index.js"></script>
+  </body>
+</html>
