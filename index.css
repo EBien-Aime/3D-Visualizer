@@ -7,3 +7,27 @@ canvas{
   width: 100%;
   height: 100%;
 }
+
+label{
+/* border: 2px solid black; */
+display: inline-block;
+position: absolute;
+top: 100%;
+}
+
+.file{
+  font-family: 'Varela Round', sans-serif;
+}
+
+#audio_file{
+  font-family: 'Varela Round', sans-serif;
+  font-size: 14px;
+  width: 80em;
+  position: absolute;
+  bottom:75%;
+
+}
+
+#audio_player{
+  width:80em;
+}
