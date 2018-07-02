@@ -18,26 +18,38 @@
     audio_player.play();
 
 
+
+
+
     //renderer
       var renderer = new THREE.WebGLRenderer({canvas: document.getElementById('myCanvas'), antialias: true});
       renderer.setClearColor(0xffffff);
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
 
+
+window.addEventListener('resize', onWindowResize, false);
+
+      function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
       //creates camera
       var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100000);
-      camera.position.set(10000,0,10000);
+      camera.position.set(10000,0,20000);
 
-				// controls = new THREE.OrbitControls( camera, renderer.domElement );
-        // controls.enableDamping = true;
-        // controls.enableZoom = true;
-        // controls.target.set(0, 0, 0);
-        // controls.rotateSpeed = 0.3;
-        // controls.zoomSpeed = 1.0;
-        // controls.panSpeed = 2.0;
-        //
-        // controls.update();
+				var controls = new THREE.OrbitControls( camera, renderer.domElement );
 
+        controls.enableDamping = true;
+        controls.enableZoom = true;
+        controls.target.set(0, 0, 0);
+        controls.rotateSpeed = 0.3;
+        controls.zoomSpeed = 1.0;
+        controls.panSpeed = 2.0;
+
+        controls.update();
 
     //scene
       var scene = new THREE.Scene();
@@ -46,6 +58,7 @@
     //object arrays
       var cubes = [];
       var octahedrons = [];
+
 
       //render plane
       var planeGeometry = new THREE.PlaneGeometry (800,800, 20, 20);
@@ -65,6 +78,7 @@
         });
         var octGeometry = new THREE.OctahedronGeometry(100, 0);
         var octMesh = new THREE.Mesh(octGeometry, octMaterial);
+        //random placement
         octMesh.position.x = Math.random() * 15000 - 800;
         octMesh.position.y = Math.random() * 15000 - 800;
         octMesh.position.z = Math.random() * 15000 - 800;
@@ -88,6 +102,30 @@
 
 
 
+      //   controls
+      //   document.addEventListener('keydown', onKeyDown, false);
+      //
+      //   function onKeyDown(){
+      //   var speed = 100
+      //   //up
+      //   if(event.keyCode == 87){
+      //     camera.position.x -= Math.sin(camera.rotation.y) * 50;
+      //     camera.position.z -= Math.cos(camera.rotation.y) * 50;
+      //   }
+      //   //down
+      //   else if (event.keyCode == 83) {
+      //     camera.position.x += Math.sin(camera.rotation.y) * 50;
+      //     camera.position.z += Math.cos(camera.rotation.y) * 50;
+      //   }
+      //   else if (event.keyCode == 65) {
+      //     camera.rotation.y += 0.1
+      //   }
+      //   else if (event.keyCode == 68) {
+      //     camera.rotation.y -= 0.1
+      //   }
+      // };
+
+
     //lights
       var light = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(light);
@@ -100,6 +138,7 @@
 
     function render() {
       // console.log(dataArray);
+
         analyser.getByteFrequencyData(dataArray);
 
         for (var i = 0; i < cubes.length; i++) {
@@ -119,7 +158,9 @@
         }
 
 
+        // controls.update();
         requestAnimationFrame(render);
+
 
 
 
