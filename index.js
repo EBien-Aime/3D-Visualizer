@@ -58,6 +58,8 @@ window.addEventListener('resize', onWindowResize, false);
         var moveBackward = false;
         var moveLeft = false;
         var moveRight = false;
+        var moveUp = false;
+        var moveDown = false;
 
 //define velocity as a vector3
     var velocity = new THREE.Vector3();
@@ -74,9 +76,6 @@ var onKeyDown = function ( event ) {
         break;
         case 65: //a
         moveLeft = true;
-        break;
-        case 68: //d
-        moveRight = true;
         break;
         case 68: //d
         moveRight = true;
@@ -114,13 +113,10 @@ var onKeyDown = function ( event ) {
       }
   }
 
+
   //make sure our document knows what functions to call when a key is pressed.
   document.addEventListener( 'keydown', onKeyDown, false );
   document.addEventListener( 'keyup', onKeyUp, false );
-
-
-
-
 
 
 
@@ -218,15 +214,21 @@ var onKeyDown = function ( event ) {
       			//reset z velocity to be 0 always. But override it if user presses up or w. See next line...
       					velocity.z -= velocity.z * 10.0 * delta;
       					velocity.x -= velocity.x * 10.0 * delta;
+      					velocity.y -= velocity.y * 10.0 * delta;
+
             //if the user pressed 'up' or 'w', set velocity.z to a value > 0.
             if ( moveForward ) velocity.z -= 20000.0 * delta;
             if ( moveBackward ) velocity.z += 20000.0 * delta;
             if ( moveLeft ) velocity.x -= 20000.0 * delta;
             if ( moveRight ) velocity.x += 20000.0 * delta;
+            if ( moveUp ) velocity.y += 20000.0 * delta;
+            if ( moveDown ) velocity.y -= 20000.0 * delta;
 
             //pass velocity as an argument to translateZ and call it on camera.
             camera.translateZ( velocity.z * delta );
             camera.translateX( velocity.x * delta );
+            camera.translateY( velocity.y * delta );
+
 
             	prevTime = time;
 
