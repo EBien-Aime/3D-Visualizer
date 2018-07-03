@@ -38,7 +38,9 @@ window.addEventListener('resize', onWindowResize, false);
 
       //creates camera
       var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100000);
+      // camera.lookAt
       camera.position.set(10000,0,20000);
+
 
 				var controls = new THREE.OrbitControls( camera, renderer.domElement );
 
@@ -51,9 +53,80 @@ window.addEventListener('resize', onWindowResize, false);
 
         controls.update();
 
+
+        var moveForward = false;
+        var moveBackward = false;
+        var moveLeft = false;
+        var moveRight = false;
+
+//define velocity as a vector3
+    var velocity = new THREE.Vector3();
+    var prevTime = performance.now();
+
+//moveforward is true when 'up' or 'w' is pressed
+var onKeyDown = function ( event ) {
+      switch ( event.keyCode ) {
+        case 87: // w
+        moveForward = true;
+        break;
+        case 83: //s
+        moveBackward = true;
+        break;
+        case 65: //a
+        moveLeft = true;
+        break;
+        case 68: //d
+        moveRight = true;
+        break;
+        case 68: //d
+        moveRight = true;
+        break;
+        case 81: //q
+        moveDown = true;
+        break;
+        case 69: //e
+        moveUp = true;
+        break;
+     }
+ }
+
+//moveforward is false when 'up' or 'w' is not pressed
+  var onKeyUp = function ( event ) {
+    switch( event.keyCode ) {
+    case 87: // w
+      moveForward = false;
+      break;
+      case 83: //s
+      moveBackward = false;
+      break;
+      case 65: //a
+      moveLeft = false;
+      break;
+      case 68: //d
+      moveRight = false;
+      break;
+      case 81: //q
+      moveDown = false;
+      break;
+      case 69: //e
+      moveUp = false;
+      break;
+      }
+  }
+
+  //make sure our document knows what functions to call when a key is pressed.
+  document.addEventListener( 'keydown', onKeyDown, false );
+  document.addEventListener( 'keyup', onKeyUp, false );
+
+
+
+
+
+
+
+
     //scene
       var scene = new THREE.Scene();
-      // scene.fog = new THREE.FogExp2( 0xCCCFFF, 0.007 );
 
     //object arrays
       var cubes = [];
@@ -100,32 +173,6 @@ window.addEventListener('resize', onWindowResize, false);
 
 };
 
-
-
-      //   controls
-      //   document.addEventListener('keydown', onKeyDown, false);
-      //
-      //   function onKeyDown(){
-      //   var speed = 100
-      //   //up
-      //   if(event.keyCode == 87){
-      //     camera.position.x -= Math.sin(camera.rotation.y) * 50;
-      //     camera.position.z -= Math.cos(camera.rotation.y) * 50;
-      //   }
-      //   //down
-      //   else if (event.keyCode == 83) {
-      //     camera.position.x += Math.sin(camera.rotation.y) * 50;
-      //     camera.position.z += Math.cos(camera.rotation.y) * 50;
-      //   }
-      //   else if (event.keyCode == 65) {
-      //     camera.rotation.y += 0.1
-      //   }
-      //   else if (event.keyCode == 68) {
-      //     camera.rotation.y -= 0.1
-      //   }
-      // };
-
-
     //lights
       var light = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(light);
@@ -165,6 +212,25 @@ window.addEventListener('resize', onWindowResize, false);
 
 
         renderer.render(scene, camera);
+        var time = performance.now();
+            var delta = ( time - prevTime ) / 1000;
+
+      			//reset z velocity to be 0 always. But override it if user presses up or w. See next line...
+      					velocity.z -= velocity.z * 10.0 * delta;
+      					velocity.x -= velocity.x * 10.0 * delta;
+            //if the user pressed 'up' or 'w', set velocity.z to a value > 0.
+            if ( moveForward ) velocity.z -= 20000.0 * delta;
+            if ( moveBackward ) velocity.z += 20000.0 * delta;
+            if ( moveLeft ) velocity.x -= 20000.0 * delta;
+            if ( moveRight ) velocity.x += 20000.0 * delta;
+
+            //pass velocity as an argument to translateZ and call it on camera.
+            camera.translateZ( velocity.z * delta );
+            camera.translateX( velocity.x * delta );
+
+            	prevTime = time;
+
+
 
       }
 
