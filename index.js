@@ -17,10 +17,6 @@
     console.log(bufferLength);
     audio_player.play();
 
-
-
-
-
     //renderer
       var renderer = new THREE.WebGLRenderer({canvas: document.getElementById('myCanvas'), antialias: true});
       renderer.setClearColor(0xffffff);
@@ -42,16 +38,29 @@ window.addEventListener('resize', onWindowResize, false);
       camera.position.set(10000,0,20000);
 
 
-				var controls = new THREE.OrbitControls( camera, renderer.domElement );
+				// var controls = new THREE.OrbitControls( camera, renderer.domElement );
+        //
+        // controls.enableDamping = true;
+        // controls.enableZoom = true;
+        // controls.target.set(0, 0, 0);
+        // controls.rotateSpeed = 0.3;
+        // controls.zoomSpeed = 1.0;
+        // controls.panSpeed = 2.0;
 
-        controls.enableDamping = true;
-        controls.enableZoom = true;
-        controls.target.set(0, 0, 0);
-        controls.rotateSpeed = 0.3;
-        controls.zoomSpeed = 1.0;
-        controls.panSpeed = 2.0;
+        // controls.update();
 
-        controls.update();
+        var gui = new dat.GUI
+
+        var params = {
+          octahedrons: 0xCCCFFF,
+          background: 0xffffff,
+          floor: 0x000000
+        };
+
+        gui.addColor(params, 'octahedrons').name('Octahedrons');
+
+        gui.close();
+
 
 
         var moveForward = false;
@@ -148,9 +157,9 @@ var onKeyDown = function ( event ) {
         var octGeometry = new THREE.OctahedronGeometry(100, 0);
         var octMesh = new THREE.Mesh(octGeometry, octMaterial);
         //random placement
-        octMesh.position.x = Math.random() * 15000 - 800;
-        octMesh.position.y = Math.random() * 15000 - 800;
-        octMesh.position.z = Math.random() * 15000 - 800;
+        octMesh.position.x = Math.random() * 25000 - 800;
+        octMesh.position.y = Math.random() * 25000 - 800;
+        octMesh.position.z = Math.random() * 25000 - 800;
         scene.add(octMesh);
         octahedrons.push(octMesh);
       }
