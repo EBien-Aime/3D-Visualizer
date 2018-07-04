@@ -51,7 +51,7 @@ window.addEventListener('resize', onWindowResize, false);
 
 
       var canvas = document.getElementsByTagName("canvas")[0],
-    mouseSensitivity = 300,
+    mouseSensitivity = 500,
     changeCallback = function(e){
       if (document.pointerLockElement === canvas ||
         document.mozPointerLockElement === canvas ||
@@ -116,13 +116,26 @@ document.exitPointerLock();
         var params = {
           octahedrons: 0xCCCFFF,
           background: 0xffffff,
-          floor: 0x000000
+          floor: 0x000000,
+          cubeMaterial: "",
+          cubeColor: 0xCCCFFF,
+          wireframe: false
         };
 
         var changeBackground = gui.addColor(params, 'background').name('Skybox');
         var changeOctColor = gui.addColor(params, 'octahedrons').name('Octahedrons');
         var changeFloor = gui.addColor(params, 'floor').name('Floor');
 
+        // var cubeFolder = gui.addFolder('Cubes');
+        // var changeMaterial = cubeFolder.add(params, 'cubeMaterial', ['Normal','Basic','Lambert']).name('Cube Material');
+        // var changeColor = cubeFolder.addColor(params, 'cubeColor').name('Cube Color');
+        //
+        // changeMaterial.onChange(function() {
+        //   cube.material.set( params.cubeMaterial );
+        // });
+        // changeColor.onChange(function() {
+        //   cube.material.color.set( params.cubeColor );
+        // });
         changeBackground.onChange(function() {
           skybox.material.color.set( params.background );
         });
