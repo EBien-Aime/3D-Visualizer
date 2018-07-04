@@ -49,7 +49,7 @@ window.addEventListener('resize', onWindowResize, false);
 
         // controls.update();
 
-        var gui = new dat.GUI
+        var gui = new dat.GUI;
 
         var params = {
           octahedrons: 0xCCCFFF,
@@ -57,11 +57,21 @@ window.addEventListener('resize', onWindowResize, false);
           floor: 0x000000
         };
 
-        gui.addColor(params, 'octahedrons').name('Octahedrons');
+        var changeBackground = gui.addColor(params, 'background').name('Skybox');
+        var changeOctColor = gui.addColor(params, 'octahedrons').name('Octahedrons');
+        var changeFloor = gui.addColor(params, 'floor').name('Floor');
+
+        changeBackground.onChange(function() {
+          skybox.material.color.set( params.background );
+        });
+        changeOctColor.onChange(function() {
+          octMesh.material.color.set( params.octahedrons );
+        });
+        changeFloor.onChange(function() {
+          plane.material.color.set( params.floor );
+        });
 
         gui.close();
-
-
 
         var moveForward = false;
         var moveBackward = false;
@@ -137,13 +147,23 @@ var onKeyDown = function ( event ) {
       var cubes = [];
       var octahedrons = [];
 
+      //skybox
+      var skyGeometry = new THREE.BoxGeometry(10000, 10000, 10000)
+      var skyMaterial = new THREE.MeshBasicMaterial( {
+        color: 0xffffff, side: THREE.DoubleSide
+      });
+      var skybox = new THREE.Mesh(skyGeometry,skyMaterial);
+      skybox.position.set(10000,3000,10000);
+      skybox.scale.set(10,10,10);
+      scene.add(skybox);
+
 
       //render plane
       var planeGeometry = new THREE.PlaneGeometry (800,800, 20, 20);
       var planeMaterial = new THREE.MeshBasicMaterial( {
         color: 0x000000, wireframe: true
       });
-      var plane = new THREE.Mesh(planeGeometry, planeMaterial)
+      var plane = new THREE.Mesh(planeGeometry, planeMaterial);
       plane.position.set(10000,-500,10000);
       plane.scale.set(50,50,50);
       plane.rotation.x = -0.5 * Math.PI;
@@ -195,8 +215,8 @@ var onKeyDown = function ( event ) {
 
         for (var i = 0; i < cubes.length; i++) {
           var cube = cubes[i];
-          cube.rotation.x += 0.03;
-          cube.rotation.y += 0.03;
+          cube.rotation.x += 0.02;
+          cube.rotation.y += 0.02;
           cube.scale.x = dataArray[50] * Math.PI/180;
           cube.scale.y = dataArray[50] * Math.PI/180;
           cube.scale.z = dataArray[50] * Math.PI/180;
@@ -205,16 +225,12 @@ var onKeyDown = function ( event ) {
 
         for (var i = 0; i < octahedrons.length; i++) {
           var octMesh = octahedrons[i];
-          octMesh.rotation.x += 0.03;
-          octMesh.rotation.y += 0.03;
+          octMesh.rotation.x += 0.02;
+          octMesh.rotation.y += 0.02;
         }
-
 
         // controls.update();
         requestAnimationFrame(render);
-
-
-
 
         renderer.render(scene, camera);
         var time = performance.now();
@@ -237,7 +253,6 @@ var onKeyDown = function ( event ) {
             camera.translateZ( velocity.z * delta );
             camera.translateX( velocity.x * delta );
             camera.translateY( velocity.y * delta );
-
 
             	prevTime = time;
 
