@@ -64,9 +64,6 @@ window.addEventListener('resize', onWindowResize, false);
         changeBackground.onChange(function() {
           skybox.material.color.set( params.background );
         });
-        changeOctColor.onChange(function() {
-          octMesh.material.color.set( params.octahedrons );
-        });
         changeFloor.onChange(function() {
           plane.material.color.set( params.floor );
         });
@@ -228,6 +225,13 @@ var onKeyDown = function ( event ) {
           octMesh.rotation.x += 0.02;
           octMesh.rotation.y += 0.02;
         }
+
+        changeOctColor.onChange(function() {
+        for (var i = 0; i < octahedrons.length; i++) {
+          var octMesh = octahedrons[i];
+          octMesh.material.color.set( params.octahedrons );
+          }
+        });
 
         // controls.update();
         requestAnimationFrame(render);
