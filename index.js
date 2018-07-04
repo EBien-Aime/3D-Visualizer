@@ -49,6 +49,68 @@ window.addEventListener('resize', onWindowResize, false);
 
         // controls.update();
 
+
+      var canvas = document.getElementsByTagName("canvas")[0],
+    mouseSensitivity = 300,
+    changeCallback = function(e){
+      if (document.pointerLockElement === canvas ||
+        document.mozPointerLockElement === canvas ||
+        document.webkitPointerLockElement === canvas) {
+        // Pointer was just locked
+        // Enable the mousemove listener
+        document.addEventListener("mousemove", moveCallback, false);
+      } else {
+        // Pointer was just unlocked
+        // Disable the mousemove listener
+        document.removeEventListener("mousemove", moveCallback, false);
+      }
+    },
+    moveCallback = function(e){
+
+      var movementX = e.movementX ||
+                      e.mozMovementX ||
+                      e.webkitMovementX ||
+                      0,
+
+          movementY = e.movementY ||
+                      e.mozMovementY ||
+                      e.webkitMovementY ||
+                      0;
+
+                      player = {
+                      body : new THREE.Object3D()
+                    }
+      player.body.rotation.y -= movementX/mouseSensitivity;
+      camera.rotation.x -= movementY/mouseSensitivity;
+      camera.rotation.y -= movementX/mouseSensitivity;
+    };
+
+canvas.requestPointerLock = canvas.requestPointerLock ||
+                            canvas.mozRequestPointerLock ||
+                            canvas.webkitRequestPointerLock;
+
+
+canvas.onclick=function(){
+
+  // Ask the browser to lock the pointer)
+  canvas.requestPointerLock();
+};
+
+
+// Hook pointer lock state change events
+document.addEventListener('pointerlockchange', changeCallback, false);
+document.addEventListener('mozpointerlockchange', changeCallback, false);
+document.addEventListener('webkitpointerlockchange', changeCallback, false);
+
+// Ask the browser to release the pointer
+document.exitPointerLock = document.exitPointerLock ||
+                           document.mozExitPointerLock ||
+                           document.webkitExitPointerLock;
+
+document.exitPointerLock();
+
+
+
         var gui = new dat.GUI;
 
         var params = {
