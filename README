@@ -1,3 +1,13 @@
+EBienAime
+3D Music Visualizer utilizing ThreeJS, Dat GUI and the Web Audio API.
+
+Controls:
+WASD to move
+E to float up
+Q to float move
+Use Mouse to look around
+
+
 References:
 https://github.com/willianjusten/awesome-audio-visualization#tutorials
 https://dzone.com/articles/exploring-html5-web-audio
@@ -6,3 +16,4 @@ https://www.html5rocks.com/en/tutorials/file/dndfiles/
 https://www.html5rocks.com/en/tutorials/webaudio/intro/#toc-load
 https://aerotwist.com/tutorials/getting-started-with-three-js/
 http://xanderlewis.co.uk/2017/11/01/visualising-sound-with-webaudio-canvas/
+https://docs.microsoft.com/en-us/windows/uwp/get-started/get-started-tutorial-game-js3d#introduction
