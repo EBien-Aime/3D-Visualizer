@@ -14,7 +14,6 @@
     analyser.fftSize = 512;
     var bufferLength = analyser.frequencyBinCount;
     var dataArray = new Uint8Array(bufferLength);
-    console.log(bufferLength);
     audio_player.play();
 
     //renderer
@@ -24,6 +23,7 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
 
 
+//resize
 window.addEventListener('resize', onWindowResize, false);
 
       function onWindowResize() {
@@ -34,11 +34,17 @@ window.addEventListener('resize', onWindowResize, false);
 
       //creates camera
       var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100000);
-      // camera.lookAt
       camera.position.set(10000,0,20000);
+    //   var player = {
+    // body : new THREE.Object3D()
+    // }
+    // player.body.add(camera);
 
 
-				// var controls = new THREE.OrbitControls( camera, renderer.domElement );
+    // controls = new THREE.PointerLockControls(camera);
+
+        //OrbitControls
+    		// var controls = new THREE.OrbitControls( camera, renderer.domElement );
         //
         // controls.enableDamping = true;
         // controls.enableZoom = true;
@@ -49,68 +55,7 @@ window.addEventListener('resize', onWindowResize, false);
 
         // controls.update();
 
-
-      var canvas = document.getElementsByTagName("canvas")[0],
-    mouseSensitivity = 500,
-    changeCallback = function(e){
-      if (document.pointerLockElement === canvas ||
-        document.mozPointerLockElement === canvas ||
-        document.webkitPointerLockElement === canvas) {
-        // Pointer was just locked
-        // Enable the mousemove listener
-        document.addEventListener("mousemove", moveCallback, false);
-      } else {
-        // Pointer was just unlocked
-        // Disable the mousemove listener
-        document.removeEventListener("mousemove", moveCallback, false);
-      }
-    },
-    moveCallback = function(e){
-
-      var movementX = e.movementX ||
-                      e.mozMovementX ||
-                      e.webkitMovementX ||
-                      0,
-
-          movementY = e.movementY ||
-                      e.mozMovementY ||
-                      e.webkitMovementY ||
-                      0;
-
-                      player = {
-                      body : new THREE.Object3D()
-                    }
-      player.body.rotation.y -= movementX/mouseSensitivity;
-      camera.rotation.x -= movementY/mouseSensitivity;
-      camera.rotation.y -= movementX/mouseSensitivity;
-    };
-
-canvas.requestPointerLock = canvas.requestPointerLock ||
-                            canvas.mozRequestPointerLock ||
-                            canvas.webkitRequestPointerLock;
-
-
-canvas.onclick=function(){
-
-  // Ask the browser to lock the pointer)
-  canvas.requestPointerLock();
-};
-
-
-// Hook pointer lock state change events
-document.addEventListener('pointerlockchange', changeCallback, false);
-document.addEventListener('mozpointerlockchange', changeCallback, false);
-document.addEventListener('webkitpointerlockchange', changeCallback, false);
-
-// Ask the browser to release the pointer
-document.exitPointerLock = document.exitPointerLock ||
-                           document.mozExitPointerLock ||
-                           document.webkitExitPointerLock;
-
-document.exitPointerLock();
-
-
-
+        //GUI Control
         var gui = new dat.GUI;
 
         var params = {
@@ -152,11 +97,15 @@ document.exitPointerLock();
         var moveUp = false;
         var moveDown = false;
 
+
+
 //define velocity as a vector3
     var velocity = new THREE.Vector3();
     var prevTime = performance.now();
 
-//moveforward is true when 'up' or 'w' is pressed
+
+
+//When key is pressed
 var onKeyDown = function ( event ) {
       switch ( event.keyCode ) {
         case 87: // w
@@ -180,7 +129,7 @@ var onKeyDown = function ( event ) {
      }
  }
 
-//moveforward is false when 'up' or 'w' is not pressed
+//when key is not pressed
   var onKeyUp = function ( event ) {
     switch( event.keyCode ) {
     case 87: // w
@@ -204,16 +153,81 @@ var onKeyDown = function ( event ) {
       }
   }
 
-
-  //make sure our document knows what functions to call when a key is pressed.
+  //add event listener for when keys are pressed and when keys is not pressed
   document.addEventListener( 'keydown', onKeyDown, false );
   document.addEventListener( 'keyup', onKeyUp, false );
+
+
+  var canvas = document.getElementsByTagName("canvas")[0],
+mouseSensitivity = 500,
+changeCallback = function(e){
+  if (document.pointerLockElement === canvas ||
+    document.mozPointerLockElement === canvas ||
+    document.webkitPointerLockElement === canvas) {
+    // Pointer was just locked
+    // Enable the mousemove listener
+    document.addEventListener("mousemove", moveCallback, false);
+  } else {
+    // Pointer was just unlocked
+    // Disable the mousemove listener
+    document.removeEventListener("mousemove", moveCallback, false);
+  }
+},
+moveCallback = function(e){
+
+  var movementX = e.movementX ||
+                  e.mozMovementX ||
+                  e.webkitMovementX ||
+                  0,
+
+      movementY = e.movementY ||
+                  e.mozMovementY ||
+                  e.webkitMovementY ||
+                  0;
+
+    // player.body.rotation.y -= movementX/mouseSensitivity;
+    camera.rotation.x -= movementY/mouseSensitivity;
+    camera.rotation.y -= movementX/mouseSensitivity;
+
+};
+
+canvas.requestPointerLock = canvas.requestPointerLock ||
+                        canvas.mozRequestPointerLock ||
+                        canvas.webkitRequestPointerLock;
+
+
+canvas.onclick=function(){
+
+// Ask the browser to lock the pointer)
+canvas.requestPointerLock();
+};
+
+
+
+//Hook pointer lock state change events
+document.addEventListener('pointerlockchange', changeCallback, false);
+document.addEventListener('mozpointerlockchange', changeCallback, false);
+document.addEventListener('webkitpointerlockchange', changeCallback, false);
+
+//Ask the browser to release the pointer
+document.exitPointerLock = document.exitPointerLock ||
+                       document.mozExitPointerLock ||
+                       document.webkitExitPointerLock;
+
+document.exitPointerLock();
+
 
 
 
 
     //scene
-      var scene = new THREE.Scene();
+      scene = new THREE.Scene();
+
+      // scene.add(player.body);
+
+
+
+
 
     //object arrays
       var cubes = [];
@@ -261,7 +275,6 @@ var onKeyDown = function ( event ) {
         var cubeGeometry = new THREE.BoxGeometry(200, 200, 200);
         var cubeMaterial = new THREE.MeshNormalMaterial
         var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        // cube.position.set(0, 0, -2000);
         cube.position.x = Math.random() * 25000 - 800;
         cube.position.y = Math.random() * 25000 - 800;
         cube.position.z = Math.random() * 25000 - 800;
@@ -285,6 +298,7 @@ var onKeyDown = function ( event ) {
 
         analyser.getByteFrequencyData(dataArray);
 
+        //animates all cubes in the for loop
         for (var i = 0; i < cubes.length; i++) {
           var cube = cubes[i];
           cube.rotation.x += 0.02;
@@ -294,13 +308,15 @@ var onKeyDown = function ( event ) {
           cube.scale.z = dataArray[50] * Math.PI/180;
         }
 
-
+        //animates all octahedrons in the for loop
         for (var i = 0; i < octahedrons.length; i++) {
           var octMesh = octahedrons[i];
           octMesh.rotation.x += 0.02;
           octMesh.rotation.y += 0.02;
         }
 
+
+        //changes color of all octahedrons
         changeOctColor.onChange(function() {
         for (var i = 0; i < octahedrons.length; i++) {
           var octMesh = octahedrons[i];
@@ -313,14 +329,15 @@ var onKeyDown = function ( event ) {
 
         renderer.render(scene, camera);
         var time = performance.now();
+
             var delta = ( time - prevTime ) / 1000;
 
-      			//reset z velocity to be 0 always. But override it if user presses up or w. See next line...
+      			//reset velocity to be 0 always.
       					velocity.z -= velocity.z * 10.0 * delta;
       					velocity.x -= velocity.x * 10.0 * delta;
       					velocity.y -= velocity.y * 10.0 * delta;
 
-            //if the user pressed 'up' or 'w', set velocity.z to a value > 0.
+            //if the user pressed specified key, set velocity to a value greater than 0.
             if ( moveForward ) velocity.z -= 20000.0 * delta;
             if ( moveBackward ) velocity.z += 20000.0 * delta;
             if ( moveLeft ) velocity.x -= 20000.0 * delta;
@@ -328,11 +345,12 @@ var onKeyDown = function ( event ) {
             if ( moveUp ) velocity.y += 20000.0 * delta;
             if ( moveDown ) velocity.y -= 20000.0 * delta;
 
-            //pass velocity as an argument to translateZ and call it on camera.
+            //pass velocity as an argument to translate and call it on camera.
             camera.translateZ( velocity.z * delta );
             camera.translateX( velocity.x * delta );
             camera.translateY( velocity.y * delta );
 
+            //Speed of motion eqivilent to the performance of computer (prevents from going too fast)
             	prevTime = time;
 
 
