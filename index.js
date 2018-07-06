@@ -1,8 +1,8 @@
-
   audio_file.onchange = function(){
     var files = this.files;
     var file = URL.createObjectURL(files[0]);
     audio_player.src = file;
+
 
 
     //captures audio context
@@ -34,26 +34,9 @@ window.addEventListener('resize', onWindowResize, false);
 
       //creates camera
       var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100000);
-      camera.position.set(10000,0,20000);
-    //   var player = {
-    // body : new THREE.Object3D()
-    // }
-    // player.body.add(camera);
+      // camera.position.set(10000,0,20000);
 
-
-    // controls = new THREE.PointerLockControls(camera);
-
-        //OrbitControls
-    		// var controls = new THREE.OrbitControls( camera, renderer.domElement );
-        //
-        // controls.enableDamping = true;
-        // controls.enableZoom = true;
-        // controls.target.set(0, 0, 0);
-        // controls.rotateSpeed = 0.3;
-        // controls.zoomSpeed = 1.0;
-        // controls.panSpeed = 2.0;
-
-        // controls.update();
+    controls = new THREE.PointerLockControls(camera);
 
         //GUI Control
         var gui = new dat.GUI;
@@ -158,72 +141,60 @@ var onKeyDown = function ( event ) {
   document.addEventListener( 'keyup', onKeyUp, false );
 
 
-  var canvas = document.getElementsByTagName("canvas")[0],
-mouseSensitivity = 500,
-changeCallback = function(e){
-  if (document.pointerLockElement === canvas ||
-    document.mozPointerLockElement === canvas ||
-    document.webkitPointerLockElement === canvas) {
-    // Pointer was just locked
-    // Enable the mousemove listener
-    document.addEventListener("mousemove", moveCallback, false);
-  } else {
-    // Pointer was just unlocked
-    // Disable the mousemove listener
-    document.removeEventListener("mousemove", moveCallback, false);
-  }
-},
-moveCallback = function(e){
-
-  var movementX = e.movementX ||
-                  e.mozMovementX ||
-                  e.webkitMovementX ||
-                  0,
-
-      movementY = e.movementY ||
-                  e.mozMovementY ||
-                  e.webkitMovementY ||
-                  0;
-
-    // player.body.rotation.y -= movementX/mouseSensitivity;
-    camera.rotation.x -= movementY/mouseSensitivity;
-    camera.rotation.y -= movementX/mouseSensitivity;
-
-};
-
-canvas.requestPointerLock = canvas.requestPointerLock ||
-                        canvas.mozRequestPointerLock ||
-                        canvas.webkitRequestPointerLock;
-
-
-canvas.onclick=function(){
-
-// Ask the browser to lock the pointer)
-canvas.requestPointerLock();
-};
-
-
-
-//Hook pointer lock state change events
-document.addEventListener('pointerlockchange', changeCallback, false);
-document.addEventListener('mozpointerlockchange', changeCallback, false);
-document.addEventListener('webkitpointerlockchange', changeCallback, false);
-
-//Ask the browser to release the pointer
-document.exitPointerLock = document.exitPointerLock ||
-                       document.mozExitPointerLock ||
-                       document.webkitExitPointerLock;
-
-document.exitPointerLock();
-
-
-
 
 
     //scene
       scene = new THREE.Scene();
+  scene.add(controls.getObject());
 
-      // scene.add(player.body);
+  var controls;
+  var controlsEnabled = false;
+
+  var canvas = document.getElementsByTagName("canvas")[0],
+    mouseSensitivity = 500,
+    changeCallback = function(e){
+      if (document.pointerLockElement === canvas ||
+        document.mozPointerLockElement === canvas ||
+        document.webkitPointerLockElement === canvas) {
+        // Pointer was just locked
+        // Enable the mousemove listener
+        document.addEventListener("mousemove", moveCallback, false);
+        controls.enabled = true;
+      } else {
+        // Pointer was just unlocked
+        // Disable the mousemove listener
+        document.removeEventListener("mousemove", moveCallback, false);
+        controls.enabled = false;
+      }
+    },
+    moveCallback = function(e){
+
+    };
+
+canvas.requestPointerLock = canvas.requestPointerLock ||
+                            canvas.mozRequestPointerLock ||
+                            canvas.webkitRequestPointerLock;
+
+
+canvas.onclick=function(){
+
+  // Ask the browser to lock the pointer)
+  canvas.requestPointerLock();
+};
+
+
+// Hook pointer lock state change events
+document.addEventListener('pointerlockchange', changeCallback, false);
+document.addEventListener('mozpointerlockchange', changeCallback, false);
+document.addEventListener('webkitpointerlockchange', changeCallback, false);
+
+// Ask the browser to release the pointer
+document.exitPointerLock = document.exitPointerLock ||
+                           document.mozExitPointerLock ||
+                           document.webkitExitPointerLock;
+
+document.exitPointerLock();
+
 
 
 
@@ -346,15 +317,15 @@ document.exitPointerLock();
             if ( moveDown ) velocity.y -= 20000.0 * delta;
 
             //pass velocity as an argument to translate and call it on camera.
-            camera.translateZ( velocity.z * delta );
-            camera.translateX( velocity.x * delta );
-            camera.translateY( velocity.y * delta );
+            controls.getObject().translateZ( velocity.z * delta );
+            controls.getObject().translateX( velocity.x * delta );
+            controls.getObject().translateY( velocity.y * delta );
 
             //Speed of motion eqivilent to the performance of computer (prevents from going too fast)
             	prevTime = time;
 
 
 
-      }
+        }
 
-};
+}
