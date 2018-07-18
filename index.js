@@ -265,7 +265,7 @@ document.exitPointerLock();
     requestAnimationFrame(render);
 
     function render() {
-      console.log(dataArray);
+      // console.log(dataArray);
 
         analyser.getByteFrequencyData(dataArray);
 
