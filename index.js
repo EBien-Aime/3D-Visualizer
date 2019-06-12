@@ -1,3 +1,4 @@
+
   audio_file.onchange = function(){
     var files = this.files;
     var file = URL.createObjectURL(files[0]);
@@ -34,9 +35,61 @@ window.addEventListener('resize', onWindowResize, false);
 
       //creates camera
       var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100000);
-      // camera.position.set(10000,0,20000);
+      camera.position.set(10000,0,20000);
 
-    controls = new THREE.PointerLockControls(camera);
+    var controls = new THREE.PointerLockControls(camera, renderer.domElement);
+
+    var controls;
+    var controlsEnabled = false;
+
+    var canvas = document.getElementsByTagName("canvas")[0],
+    mouseSensitivity = 500,
+      changeCallback = function(e){
+        if (document.pointerLockElement === canvas ||
+          document.mozPointerLockElement === canvas ||
+          document.webkitPointerLockElement === canvas) {
+          // Pointer was just locked
+          // Enable the mousemove listener
+          document.addEventListener("mousemove", moveCallback, false);
+          controls.enabled = true;
+        } else {
+          // Pointer was just unlocked
+          // Disable the mousemove listener
+          document.removeEventListener("mousemove", moveCallback, false);
+          controls.enabled = false;
+        }
+      },
+      moveCallback = function(e){
+
+  };
+
+  canvas.requestPointerLock = canvas.requestPointerLock ||
+                              canvas.mozRequestPointerLock ||
+                              canvas.webkitRequestPointerLock;
+
+
+  canvas.onclick=function(){
+
+    // Ask the browser to lock the pointer)
+    canvas.requestPointerLock();
+  };
+
+
+  // Hook pointer lock state change events
+  document.addEventListener('pointerlockchange', changeCallback, false);
+  document.addEventListener('mozpointerlockchange', changeCallback, false);
+  document.addEventListener('webkitpointerlockchange', changeCallback, false);
+
+
+  // Ask the browser to release the pointer
+  document.exitPointerLock = document.exitPointerLock ||
+                             document.mozExitPointerLock ||
+                             document.webkitExitPointerLock;
+
+  document.exitPointerLock();
+
+
+
 
         //GUI Control
         var gui = new dat.GUI;
@@ -146,58 +199,6 @@ var onKeyDown = function ( event ) {
     //scene
       scene = new THREE.Scene();
   scene.add(controls.getObject());
-
-  var controls;
-  var controlsEnabled = false;
-
-  var canvas = document.getElementsByTagName("canvas")[0],
-    mouseSensitivity = 500,
-    changeCallback = function(e){
-      if (document.pointerLockElement === canvas ||
-        document.mozPointerLockElement === canvas ||
-        document.webkitPointerLockElement === canvas) {
-        // Pointer was just locked
-        // Enable the mousemove listener
-        document.addEventListener("mousemove", moveCallback, false);
-        controls.enabled = true;
-      } else {
-        // Pointer was just unlocked
-        // Disable the mousemove listener
-        document.removeEventListener("mousemove", moveCallback, false);
-        controls.enabled = false;
-      }
-    },
-    moveCallback = function(e){
-
-    };
-
-canvas.requestPointerLock = canvas.requestPointerLock ||
-                            canvas.mozRequestPointerLock ||
-                            canvas.webkitRequestPointerLock;
-
-
-canvas.onclick=function(){
-
-  // Ask the browser to lock the pointer)
-  canvas.requestPointerLock();
-};
-
-
-// Hook pointer lock state change events
-document.addEventListener('pointerlockchange', changeCallback, false);
-document.addEventListener('mozpointerlockchange', changeCallback, false);
-document.addEventListener('webkitpointerlockchange', changeCallback, false);
-
-// Ask the browser to release the pointer
-document.exitPointerLock = document.exitPointerLock ||
-                           document.mozExitPointerLock ||
-                           document.webkitExitPointerLock;
-
-document.exitPointerLock();
-
-
-
-
 
 
     //object arrays
@@ -320,6 +321,7 @@ document.exitPointerLock();
             controls.getObject().translateZ( velocity.z * delta );
             controls.getObject().translateX( velocity.x * delta );
             controls.getObject().translateY( velocity.y * delta );
+
 
             //Speed of motion eqivilent to the performance of computer (prevents from going too fast)
             	prevTime = time;
