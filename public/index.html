@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <!-- <link rel="stylesheet" href="index.css"> -->
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Visualiser</title>
+    <script type="importmap">
+            {
+                "imports": {
+                    "three": "./build/three.module.js"
+                }
+            }
+        </script>
+</head>
+
+<body>
+    <!-- audio -->
+    <label for="audio_file" class="file"> Choose an audio file
+        <input type="file" id="audio_file" accept="audio/*" />
+        <audio id="audio_player" controls>
+    </label>
+    <canvas id="myCanvas"></canvas>
+
+    <!-- Three.js -->
+    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.2/dat.gui.min.js'></script>
+  <script src="https://threejs.org/examples/js/controls/PointerLockControls.js"></script> -->
+
+    <!-- <script type="module" src="./three.module.min.js"></script> -->
+
+    <!-- <script src="./PointerLockControls.js"></script> -->
+    <!-- <script type="module" src="./three.min.js"></script> -->
+    <!-- <script type="type" src="3D-Visualizer/PointerLockControls.js"></script> -->
+    <!-- <script src="./index.js"></script> -->
+
+    <script type="module" src="client.js">
+
+    // import * as THREE from '../node_modules/three/build/three.module.js';
+    // import { PointerLockControls } from '/Users/Emmanuel/Documents/web-projects/3D-Visualizer/node_modules/three/examples/jsm/controls/PointerLockControls.js';
+    // import { PointerLockControls } from '../node_modules/jsm/controls/PointerLockControls.js';
+    </script>
+</body>
