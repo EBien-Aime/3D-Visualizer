@@ -1,0 +1,24 @@
+{
+  "name": "3d-visualizer",
+  "version": "1.0.0",
+  "description": "EBienAime 3D Music Visualizer utilizing ThreeJS, Dat GUI and the Web Audio API.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EBien-Aime/3D-Visualizer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EBien-Aime/3D-Visualizer/issues"
+  },
+  "homepage": "https://github.com/EBien-Aime/3D-Visualizer#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "three": "^0.155.0"
+  }
+}
